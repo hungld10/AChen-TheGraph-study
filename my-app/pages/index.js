@@ -21,6 +21,10 @@ export default function Home() {
   const [logs, setLogs] = useState([])
   const web3ModalRef = useRef()
 
+  // This is used to force react to re render the page when we want to
+  // in our case we will use force update to show new logs
+  const forceUpdate = React.useReducer(() => ({}), {})[1];
+
   /*
     connectWallet: Connects the Metamask wallet
   */
