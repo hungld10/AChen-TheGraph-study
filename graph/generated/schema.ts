@@ -18,8 +18,6 @@ export class Game extends Entity {
 
     this.set("maxPlayers", Value.fromI32(0));
     this.set("entryFee", Value.fromBigInt(BigInt.zero()));
-    this.set("winner", Value.fromBytes(Bytes.empty()));
-    this.set("requestId", Value.fromBytes(Bytes.empty()));
     this.set("players", Value.fromBytesArray(new Array(0)));
   }
 
@@ -66,22 +64,38 @@ export class Game extends Entity {
     this.set("entryFee", Value.fromBigInt(value));
   }
 
-  get winner(): Bytes {
+  get winner(): Bytes | null {
     let value = this.get("winner");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set winner(value: Bytes) {
-    this.set("winner", Value.fromBytes(value));
+  set winner(value: Bytes | null) {
+    if (!value) {
+      this.unset("winner");
+    } else {
+      this.set("winner", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get requestId(): Bytes {
+  get requestId(): Bytes | null {
     let value = this.get("requestId");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set requestId(value: Bytes) {
-    this.set("requestId", Value.fromBytes(value));
+  set requestId(value: Bytes | null) {
+    if (!value) {
+      this.unset("requestId");
+    } else {
+      this.set("requestId", Value.fromBytes(<Bytes>value));
+    }
   }
 
   get players(): Array<Bytes> {
